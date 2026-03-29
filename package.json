@@ -1,0 +1,68 @@
+{
+  "name": "claude-scroll",
+  "displayName": "Claude Scroll",
+  "description": "Watch YouTube Shorts while Claude thinks — auto-opens when Claude is working, auto-closes when done",
+  "version": "0.1.5",
+  "publisher": "halilakkaya",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xhalil/claude-scroll.git"
+  },
+  "icon": "claude-vibe-scroll-128x128.png",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "youtube",
+    "shorts",
+    "claude",
+    "ai",
+    "productivity"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claude-scroll.toggle",
+        "title": "Claude Scroll: Toggle"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Scroll",
+      "properties": {
+        "claude-scroll.windowWidth": {
+          "type": "number",
+          "default": 400,
+          "minimum": 200,
+          "maximum": 1200,
+          "description": "Width of the YouTube Shorts window in pixels"
+        },
+        "claude-scroll.windowSide": {
+          "type": "string",
+          "enum": ["right", "left"],
+          "default": "right",
+          "description": "Which side of the VSCode window to open YouTube Shorts"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.94.0",
+    "typescript": "^5.5.0",
+    "@vscode/vsce": "^3.0.0"
+  }
+}
