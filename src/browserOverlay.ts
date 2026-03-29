@@ -95,6 +95,23 @@ export class BrowserOverlay {
 
   private acquireLock(): boolean {
     try {
+      // Check if existing lock is stale (process no longer running)
+      try {
+        const existingPid = parseInt(fs.readFileSync(LOCK_FILE, 'utf8'));
+        if (!isNaN(existingPid) && existingPid !== process.pid) {
+          try {
+            process.kill(existingPid, 0); // throws if process doesn't exist
+          } catch (e: any) {
+            if (e.code === 'ESRCH') {
+              fs.unlinkSync(LOCK_FILE); // stale lock, remove it
+            } else {
+              this.owner = false;
+              return false; // process exists (EPERM), lock is valid
+            }
+          }
+        }
+      } catch {}
+
       fs.writeFileSync(LOCK_FILE, String(process.pid), { flag: 'wx' });
       this.owner = true;
       return true;

@@ -13,6 +13,7 @@ export class ClaudeMonitor {
   private jsonlPath: string | null = null;
   private toolUseTimer: NodeJS.Timeout | null = null;
   private idleTimer: NodeJS.Timeout | null = null;
+  private watchdogTimer: NodeJS.Timeout | null = null;
 
   private readonly _onStateChange = new vscode.EventEmitter<ClaudeState>();
   readonly onStateChange = this._onStateChange.event;
@@ -36,6 +37,7 @@ export class ClaudeMonitor {
     if (this.pollTimer) { clearInterval(this.pollTimer); }
     if (this.toolUseTimer) { clearTimeout(this.toolUseTimer); }
     if (this.idleTimer) { clearTimeout(this.idleTimer); }
+    if (this.watchdogTimer) { clearTimeout(this.watchdogTimer); }
   }
 
   getState(): ClaudeState {
@@ -127,7 +129,17 @@ export class ClaudeMonitor {
     } catch {}
   }
 
+  private resetWatchdog(): void {
+    if (this.watchdogTimer) { clearTimeout(this.watchdogTimer); }
+    this.watchdogTimer = setTimeout(() => {
+      if (this.state === ClaudeState.THINKING || this.state === ClaudeState.PERMISSION_NEEDED) {
+        this.setState(ClaudeState.IDLE);
+      }
+    }, 10000);
+  }
+
   private processEntry(entry: JournalEntry): void {
+    this.resetWatchdog();
     const role = entry.message?.role;
     const stopReason = entry.message?.stop_reason;
 

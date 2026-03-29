@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.8] - 2026-03-29
+
+### Fixed
+- Stale lock file detection — crashed VSCode instances no longer block Shorts from opening
+- Watchdog timer — if end_turn is missed, Shorts closes after 10 seconds of inactivity
+
 ## [0.1.7] - 2026-03-29
 
 ### Fixed
