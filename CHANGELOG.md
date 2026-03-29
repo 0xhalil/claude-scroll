@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.6] - 2026-03-29
+
+### Fixed
+- Exclude demo GIF from VSIX package (reduces install size)
+- macOS: activate VSCode before closing Shorts window to prevent other Chrome windows flashing
+
 ## [0.1.5] - 2026-03-29
 
 ### Fixed
