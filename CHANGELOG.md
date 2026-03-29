@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.9] - 2026-03-29
+
+### Fixed
+- Shorts now closes when only Cursor is open (all instances close Chrome on hide)
+- Removed VSCode auto-activation on close — no longer switches focus away from Cursor
+
 ## [0.1.8] - 2026-03-29
 
 ### Fixed

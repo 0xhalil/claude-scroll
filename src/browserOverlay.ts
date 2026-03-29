@@ -87,10 +87,8 @@ export class BrowserOverlay {
     if (!this.active) { return; }
     this.active = false;
     if (this.raiseTimer) { clearInterval(this.raiseTimer); this.raiseTimer = null; }
-    if (this.owner) {
-      this.closeChromeWindow();
-      this.releaseLock();
-    }
+    this.closeChromeWindow();
+    if (this.owner) { this.releaseLock(); }
   }
 
   private acquireLock(): boolean {
@@ -326,13 +324,6 @@ public class Win { [DllImport("user32.dll")] public static extern bool SetForegr
       child_process.exec(`xdotool search --name "YouTube" windowclose 2>/dev/null`);
     } else {
       this.runAppleScript(`
-try
-  tell application "Visual Studio Code" to activate
-end try
-try
-  tell application "Code" to activate
-end try
-delay 0.1
 tell application "Google Chrome"
   set windowList to every window
   repeat with win in windowList

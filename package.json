@@ -2,7 +2,7 @@
   "name": "claude-scroll",
   "displayName": "Claude Scroll",
   "description": "Watch YouTube Shorts while Claude thinks — auto-opens when Claude is working, auto-closes when done",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "publisher": "halilakkaya",
   "license": "MIT",
   "repository": {
@@ -57,7 +57,10 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
-    "package": "vsce package"
+    "package": "vsce package",
+    "publish:vscode": "vsce publish",
+    "publish:ovsx": "vsce package && ovsx publish claude-scroll-$(node -p \"require('./package.json').version\").vsix -p $OVSX_TOKEN",
+    "publish:all": "npm run compile && npm run publish:vscode && npm run publish:ovsx"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
