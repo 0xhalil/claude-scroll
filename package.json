@@ -2,7 +2,7 @@
   "name": "claude-scroll",
   "displayName": "Claude Scroll",
   "description": "Watch YouTube Shorts while Claude thinks — auto-opens when Claude is working, auto-closes when done",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "publisher": "halilakkaya",
   "license": "MIT",
   "repository": {

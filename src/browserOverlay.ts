@@ -32,8 +32,11 @@ const CHROME_PATHS: Record<string, string[]> = {
   ],
 };
 
+const LOCK_FILE = path.join(os.homedir(), '.claude', 'claude-scroll.lock');
+
 export class BrowserOverlay {
   private active = false;
+  private owner = false;
   private raiseTimer: NodeJS.Timeout | null = null;
   private readonly extensionUri: vscode.Uri;
 
@@ -46,6 +49,8 @@ export class BrowserOverlay {
   async show(): Promise<void> {
     if (this.active) { return; }
     this.active = true;
+
+    if (!this.acquireLock()) { return; }
 
     const chromePath = this.findChrome();
     if (!chromePath) {
@@ -82,7 +87,31 @@ export class BrowserOverlay {
     if (!this.active) { return; }
     this.active = false;
     if (this.raiseTimer) { clearInterval(this.raiseTimer); this.raiseTimer = null; }
-    this.closeChromeWindow();
+    if (this.owner) {
+      this.closeChromeWindow();
+      this.releaseLock();
+    }
+  }
+
+  private acquireLock(): boolean {
+    try {
+      fs.writeFileSync(LOCK_FILE, String(process.pid), { flag: 'wx' });
+      this.owner = true;
+      return true;
+    } catch {
+      this.owner = false;
+      return false;
+    }
+  }
+
+  private releaseLock(): void {
+    try {
+      const content = fs.readFileSync(LOCK_FILE, 'utf8');
+      if (content === String(process.pid)) {
+        fs.unlinkSync(LOCK_FILE);
+      }
+    } catch {}
+    this.owner = false;
   }
 
   private raiseShortsWindow(): void {
@@ -329,5 +358,6 @@ end tell
 
   dispose(): void {
     this.hide();
+    this.releaseLock();
   }
 }

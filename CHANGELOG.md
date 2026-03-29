@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.7] - 2026-03-29
+
+### Fixed
+- Multiple VSCode windows no longer open duplicate Shorts windows (lock file mechanism)
+
 ## [0.1.6] - 2026-03-29
 
 ### Fixed
