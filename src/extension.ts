@@ -18,12 +18,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   const toggleCommand = vscode.commands.registerCommand('claude-scroll.toggle', () => {
     if (overlay.isOpen) {
+      enabled = false;
       overlay.hide();
     } else {
       enabled = !enabled;
-      if (!enabled) { overlay.hide(); }
-      updateStatusBar(monitor?.getState() ?? ClaudeState.IDLE);
     }
+    updateStatusBar(monitor?.getState() ?? ClaudeState.IDLE);
   });
 
   context.subscriptions.push(statusBarItem, toggleCommand);
