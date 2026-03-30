@@ -324,10 +324,6 @@ public class Win { [DllImport("user32.dll")] public static extern bool SetForegr
       child_process.exec(`xdotool search --name "YouTube" windowclose 2>/dev/null && xdotool search --name "Visual Studio Code" windowactivate 2>/dev/null`);
     } else {
       this.runAppleScript(`
-tell application "Visual Studio Code"
-  activate
-end tell
-delay 0.3
 tell application "Google Chrome"
   set windowList to every window
   repeat with win in windowList
@@ -339,6 +335,9 @@ tell application "Google Chrome"
   end repeat
 end tell
 `);
+      setTimeout(() => {
+        child_process.exec(`open -a "Visual Studio Code"`);
+      }, 300);
     }
   }
 
