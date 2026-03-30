@@ -321,7 +321,7 @@ public class Win { [DllImport("user32.dll")] public static extern bool SetForegr
 `;
       this.runPowerShell(script);
     } else if (PLATFORM === 'linux') {
-      child_process.exec(`xdotool search --name "YouTube" windowclose 2>/dev/null`);
+      child_process.exec(`xdotool search --name "YouTube" windowclose 2>/dev/null && xdotool search --name "Visual Studio Code" windowactivate 2>/dev/null`);
     } else {
       this.runAppleScript(`
 tell application "Google Chrome"
@@ -333,6 +333,9 @@ tell application "Google Chrome"
       end if
     end try
   end repeat
+end tell
+tell application "Visual Studio Code"
+  activate
 end tell
 `);
     }
