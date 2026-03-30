@@ -323,6 +323,7 @@ public class Win { [DllImport("user32.dll")] public static extern bool SetForegr
     } else if (PLATFORM === 'linux') {
       child_process.exec(`xdotool search --name "YouTube" windowclose 2>/dev/null && xdotool search --name "Visual Studio Code" windowactivate 2>/dev/null`);
     } else {
+      const appBundle = process.execPath.split('.app')[0] + '.app';
       this.runAppleScript(`
 tell application "Google Chrome"
   set windowList to every window
@@ -334,10 +335,11 @@ tell application "Google Chrome"
     end try
   end repeat
 end tell
-`);
-      setTimeout(() => {
-        child_process.exec(`open -a "Visual Studio Code"`);
-      }, 300);
+`, () => {
+        setTimeout(() => {
+          child_process.exec(`open "${appBundle}"`);
+        }, 300);
+      });
     }
   }
 
